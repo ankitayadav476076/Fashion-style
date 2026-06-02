@@ -1,14 +1,29 @@
 import { useNavigate } from "react-router-dom";
+
 function Login() {
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
+
+  // Google Login Function
+  const googleLogin = () => {
+
+    window.open(
+      "http://localhost:5000/auth/google",
+      "_self"
+    );
+  };
+
   return (
+
     <section className="min-h-screen bg-black text-white flex flex-col items-center px-4 py-5">
 
       {/* Logo */}
       <div className="w-full max-w-md mb-4">
+
         <h1 className="text-[#d4a63c] text-lg font-['Cormorant_Garamond']">
           ✨ Maison AI
         </h1>
+
       </div>
 
       {/* Login Card */}
@@ -24,7 +39,10 @@ function Login() {
         </p>
 
         {/* Google Button */}
-        <button className="w-full border border-[#161616] py-2.5 text-sm font-medium hover:border-zinc-700 transition mb-6">
+        <button
+          onClick={googleLogin}
+          className="w-full border border-[#161616] py-2.5 text-sm font-medium hover:border-zinc-700 transition mb-6"
+        >
           Continue with Google
         </button>
 
@@ -50,7 +68,7 @@ function Login() {
 
           <input
             type="email"
-                autoComplete="off"
+            autoComplete="off"
             placeholder="Enter email"
             className="w-full bg-transparent border border-[#161616] py-2.5 px-3 text-sm outline-none"
           />
@@ -89,13 +107,16 @@ function Login() {
 
         {/* Signup */}
         <p className="text-center text-zinc-500 text-xs">
+
           No account?{" "}
+
           <span
-    onClick={() => navigate("/signup")}
-    className="text-zinc-300 cursor-pointer"
-  >
-    Create one →
-  </span>
+            onClick={() => navigate("/signup")}
+            className="text-zinc-300 cursor-pointer"
+          >
+            Create one →
+          </span>
+
         </p>
 
       </div>
