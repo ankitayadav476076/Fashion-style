@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+
+  console.log(import.meta.env.VITE_API_URL);
+
   const navigate = useNavigate();
 
   const API = import.meta.env.VITE_API_URL;
