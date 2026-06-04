@@ -3,12 +3,15 @@ const passport = require("passport");
 
 const router = express.Router();
 
+const User = require("../models/User");
+
 
 // ================= GOOGLE LOGIN =================
 
 // Google Login Route
 router.get(
   "/google",
+
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
@@ -34,59 +37,114 @@ router.get(
 
 // ================= NORMAL SIGNUP =================
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
 
-  console.log("Signup API hit");
+  try {
 
-  const { name, email, password } = req.body;
+    console.log("Signup API hit");
 
-  // Temporary signup check
-  if (name && email && password) {
+    const { name, email, password } = req.body;
 
-    return res.json({
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+
+      return res.json({
+        success: false,
+        message: "User already exists",
+      });
+
+    }
+
+    // Create new user
+    const newUser = new User({
+      name,
+      email,
+      password,
+    });
+
+    // Save user in MongoDB
+    await newUser.save();
+
+    res.json({
       success: true,
-      token: "abc123",
+      message: "Account created successfully",
       user: {
         name,
         email,
       },
     });
 
-  }
+  } catch (error) {
 
-  res.json({
-    success: false,
-    message: "Signup failed",
-  });
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+
+  }
 
 });
 
 
 // ================= NORMAL LOGIN =================
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
 
-  console.log("Login API hit");
+  try {
 
-  const { email, password } = req.body;
+    console.log("Login API hit");
 
-  // Temporary login check
-  if (email && password) {
+    const { email, password } = req.body;
 
-    return res.json({
+    // Find user
+    const user = await User.findOne({ email });
+
+    // Check user
+    if (!user) {
+
+      return res.json({
+        success: false,
+        message: "User not found",
+      });
+
+    }
+
+    // Check password
+    if (user.password !== password) {
+
+      return res.json({
+        success: false,
+        message: "Invalid password",
+      });
+
+    }
+
+    // Login success
+    res.json({
       success: true,
+      message: "Login successful",
       token: "abc123",
+
       user: {
-        email,
+        name: user.name,
+        email: user.email,
       },
     });
 
-  }
+  } catch (error) {
 
-  res.json({
-    success: false,
-    message: "Invalid credentials",
-  });
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+
+  }
 
 });
 
