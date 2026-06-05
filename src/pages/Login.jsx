@@ -5,7 +5,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
   // State
   const [email, setEmail] = useState("");
@@ -39,16 +39,15 @@ function Login() {
       console.log(data);
 
       if (data.success) {
-
-        // Save token
+        // Save token & user
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
 
         // Success Message
         alert("Login successful ✅");
 
         // Redirect to Dashboard
         navigate("/dashboard");
-
       } else {
 
         alert(data.message || "Invalid credentials");

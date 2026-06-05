@@ -55,7 +55,9 @@ function Hero() {
         </button>
 
         <p 
-        onClick={() => navigate("/how-it-works")}
+        onClick={() => {
+          document.getElementById("process")?.scrollIntoView({ behavior: "smooth" });
+        }}
         className="px-10 py-2 rounded-md text-lg text-gray-400 hover:bg-[#f5d48f] hover:text-black transition duration-300 cursor-pointer">
 
           See how it works
@@ -153,7 +155,7 @@ function Hero() {
       </div>
 
       {/* Process Section */}
-      <div className="w-full px-8 md:px-20 py-24 text-white text-left">
+      <div id="process" className="w-full px-8 md:px-20 py-24 text-white text-left">
 
         {/* Small Title */}
         <p className="text-[#d4a63c] tracking-[5px] text-xs mb-6">

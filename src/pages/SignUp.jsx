@@ -5,12 +5,17 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
   // State
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Google Login
+  const googleLogin = () => {
+    window.open(`${API}/auth/google`, "_self");
+  };
 
   // Signup Function
   const handleSignup = async () => {
@@ -82,7 +87,10 @@ function Signup() {
         </p>
 
         {/* Google Button */}
-        <button className="w-full border border-[#161616] py-2.5 text-sm font-medium hover:border-zinc-700 transition mb-6">
+        <button
+          onClick={googleLogin}
+          className="w-full border border-[#161616] py-2.5 text-sm font-medium hover:border-zinc-700 transition mb-6"
+        >
           Continue with Google
         </button>
 

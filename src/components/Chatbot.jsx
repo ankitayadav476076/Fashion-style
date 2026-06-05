@@ -16,7 +16,8 @@ function Chatbot() {
 
     setMessage("");
 
-    const response = await fetch("http://localhost:5000/chat", {
+    const API = import.meta.env.VITE_API_URL || "http://localhost:5001";
+    const response = await fetch(`${API}/chat`, {
       method: "POST",
 
       headers: {

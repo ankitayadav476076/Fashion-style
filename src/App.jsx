@@ -1,10 +1,10 @@
 import Home from "./pages/Home";
-import Login from "./components/Login";
-import Signup from "./components/SignUp";
-import Analyze from "./components/Analyze";
-import Stylist from "./components/Stylist";
-import Wardrobe from "./components/Wardrobe";
-import Dashboard from "./components/Dashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/SignUp";
+import Analyze from "./pages/Analyze";
+import Stylist from "./pages/Stylist";
+import Wardrobe from "./pages/Wardrobe";
+import Dashboard from "./pages/Dashboard";
 import Chatbot from "./components/Chatbot";
 import { Routes, Route } from "react-router-dom";
 

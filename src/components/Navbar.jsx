@@ -1,7 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Navbar() {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!localStorage.getItem("token"));
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-lg">
@@ -9,62 +18,75 @@ function Navbar() {
 
         {/* Brand Name */}
         <h1
-          
+          onClick={() => navigate("/")}
           className="text-3xl font-serif text-white tracking-wide cursor-pointer"
         >
-          Maison<span className="text-yellow-500">AI</span>
+          Maison<span className="text-[#c8a45d]">AI</span>
         </h1>
 
         {/* Navigation */}
-        <nav className="flex items-center gap-6 text-gray-300">
+        <nav className="flex items-center gap-6 text-gray-300 text-sm">
 
           {/* Home */}
           <button
             onClick={() => navigate("/")}
-            className="hover:text-yellow-500 transition cursor-pointer"
+            className="hover:text-[#c8a45d] transition cursor-pointer"
           >
             Home
           </button>
 
-          {/* Analyze */}
-          <button
-            onClick={() => navigate("/analyze")}
-            className="hover:text-yellow-500 transition cursor-pointer"
-          >
-            Analyze
-          </button>
+          {isLoggedIn && (
+            <>
+              {/* Analyze */}
+              <button
+                onClick={() => navigate("/analyze")}
+                className="hover:text-[#c8a45d] transition cursor-pointer"
+              >
+                Analyze
+              </button>
 
-          {/* Stylist */}
-          <button
-            onClick={() => navigate("/stylist")}
-            className="hover:text-yellow-500 transition cursor-pointer"
-          >
-            Stylist
-          </button>
+              {/* Stylist */}
+              <button
+                onClick={() => navigate("/stylist")}
+                className="hover:text-[#c8a45d] transition cursor-pointer"
+              >
+                Stylist
+              </button>
 
-          {/* Wardrobe */}
-          <button
-            onClick={() => navigate("/wardrobe")}
-            className="hover:text-yellow-500 transition cursor-pointer"
-          >
-            Wardrobe
-          </button>
+              {/* Wardrobe */}
+              <button
+                onClick={() => navigate("/wardrobe")}
+                className="hover:text-[#c8a45d] transition cursor-pointer"
+              >
+                Wardrobe
+              </button>
 
-          {/* Dashboard */}
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="px-2 py-0.5 border border-zinc-700 text-white font-semibold rounded-md hover:border-zinc-500 transition"
-          >
-            Dashboard
-          </button>
+              {/* Dashboard */}
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="px-2.5 py-1 border border-zinc-700 text-white font-semibold rounded hover:border-zinc-500 transition cursor-pointer"
+              >
+                Dashboard
+              </button>
+            </>
+          )}
 
-          {/* Sign Out */}
-          <button
-            onClick={() => navigate("/login")}
-            className="text-sm hover:text-yellow-500 transition"
-          >
-            Sign out
-          </button>
+          {/* Sign Out / Sign In */}
+          {isLoggedIn ? (
+            <button
+              onClick={handleSignOut}
+              className="hover:text-[#c8a45d] transition cursor-pointer font-medium"
+            >
+              Sign out
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="hover:text-[#c8a45d] transition cursor-pointer font-medium"
+            >
+              Sign in
+            </button>
+          )}
 
         </nav>
 
