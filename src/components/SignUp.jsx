@@ -1,8 +1,63 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
 
   const navigate = useNavigate();
+
+  const API = import.meta.env.VITE_API_URL;
+
+  // State
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Signup Function
+  const handleSignup = async () => {
+
+    try {
+
+      const res = await fetch(`${API}/auth/signup`, {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      console.log(data);
+
+      if (data.success) {
+
+        // Success Message
+        alert("Account created successfully ✅");
+
+        // Redirect to Login Page
+        navigate("/login");
+
+      } else {
+
+        alert(data.message || "Signup failed");
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Server error");
+
+    }
+
+  };
 
   return (
     <section className="min-h-screen bg-black text-white flex flex-col items-center px-4 py-5">
@@ -53,6 +108,10 @@ function Signup() {
 
           <input
             type="text"
+            autoComplete="off"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             className="w-full bg-transparent border border-[#161616] py-2.5 px-3 text-sm outline-none"
           />
 
@@ -60,7 +119,6 @@ function Signup() {
 
         {/* Email */}
         <div className="mb-4">
-             
 
           <label className="block text-xs mb-2 text-zinc-400">
             Email
@@ -68,7 +126,10 @@ function Signup() {
 
           <input
             type="email"
-             autoComplete="off"
+            autoComplete="off"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-transparent border border-[#161616] py-2.5 px-3 text-sm outline-none"
           />
 
@@ -84,13 +145,19 @@ function Signup() {
           <input
             type="password"
             autoComplete="off"
+            placeholder="Create password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-transparent border border-[#161616] py-2.5 px-3 text-sm outline-none"
           />
 
         </div>
 
         {/* Create Account */}
-        <button className="w-full bg-[#e0b84f] text-black py-2.5 text-sm font-semibold hover:bg-[#d4a63c] transition mb-6">
+        <button
+          onClick={handleSignup}
+          className="w-full bg-[#e0b84f] text-black py-2.5 text-sm font-semibold hover:bg-[#d4a63c] transition mb-6"
+        >
           Create account
         </button>
 

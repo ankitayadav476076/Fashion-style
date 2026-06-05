@@ -46,13 +46,17 @@ function Hero() {
       {/* Buttons */}
       <div className="flex items-center gap-8 mt-12 flex-wrap justify-center">
 
-        <button className="bg-[#f5d48f] text-black px-10 py-2 rounded-md text-base font-semibold hover:bg-[#e6c27a] transition duration-300">
+        <button 
+        onClick={() => navigate("/login")}
+        className="bg-[#f5d48f] text-black px-10 py-2 rounded-md text-base font-semibold hover:bg-[#e6c27a] transition duration-300">
 
           Begin With Session
 
         </button>
 
-        <p className="px-10 py-2 rounded-md text-lg text-gray-400 hover:bg-[#f5d48f] hover:text-black transition duration-300 cursor-pointer">
+        <p 
+        onClick={() => navigate("/how-it-works")}
+        className="px-10 py-2 rounded-md text-lg text-gray-400 hover:bg-[#f5d48f] hover:text-black transition duration-300 cursor-pointer">
 
           See how it works
 
