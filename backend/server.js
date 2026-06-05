@@ -1,11 +1,18 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
-const dotenv = require("dotenv");
 const cors = require("cors");
+const OpenAI = require("openai");
 
-dotenv.config();
+const app = express();
+
+// OpenAI Setup
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 // MongoDB Connection
 mongoose
@@ -18,13 +25,13 @@ mongoose
     console.log(err);
   });
 
+// Passport Config
 require("./passport");
 
+// Routes
 const authRoutes = require("./routes/auth");
 
-const app = express();
-
-// Allow frontend
+// Middleware
 app.use(
   cors({
     origin: "*",
@@ -34,7 +41,7 @@ app.use(
 
 app.use(express.json());
 
-// Session setup
+// Session Setup
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -53,6 +60,43 @@ app.get("/", (req, res) => {
 
 // Auth Routes
 app.use("/auth", authRoutes);
+
+// ==========================
+// AI CHATBOT ROUTE
+// ==========================
+
+app.post("/chat", async (req, res) => {
+  try {
+    const userMessage = req.body.message;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1-mini",
+
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a luxury AI fashion stylist. Help users with outfits, styling, fashion trends, color combinations, accessories, and occasion-based looks.",
+        },
+
+        {
+          role: "user",
+          content: userMessage,
+        },
+      ],
+    });
+
+    res.json({
+      reply: response.choices[0].message.content,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      error: "Something went wrong",
+    });
+  }
+});
 
 // Server
 const PORT = process.env.PORT || 5000;
