@@ -74,6 +74,9 @@ app.get("/", (req, res) => {
   res.send("Backend is working 🚀");
 });
 
+// Avoid console favicon 404 logs
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+
 // Auth Routes
 app.use("/auth", authRoutes);
 app.use("/wardrobe", wardrobeRoutes);
